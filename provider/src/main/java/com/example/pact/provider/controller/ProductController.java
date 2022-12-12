@@ -27,12 +27,12 @@ public class ProductController {
             )
     );
 
-    @GetMapping("/products")
+    @GetMapping("/product")
     public ResponseEntity<Collection<Product>> list() {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/product/{id}")
     public ResponseEntity<Product> list(@PathVariable("id") Long id) {
         return products.stream()
                 .filter(x -> id == x.id())
