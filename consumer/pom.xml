@@ -43,6 +43,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>au.com.dius.pact.provider</groupId>
+                <artifactId>maven</artifactId>
+                <version>4.4.2</version>
+                <configuration>
+                    <pactBrokerUrl>http://localhost:9292</pactBrokerUrl>
+                    <pactBrokerUsername>pact-workshop</pactBrokerUsername>
+                    <pactBrokerPassword>pact-workshop</pactBrokerPassword>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
