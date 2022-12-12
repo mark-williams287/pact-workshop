@@ -5,14 +5,157 @@
   "interactions": [
     {
       "comments": {
+        "testname": "com.example.pact.consumer.client.ProductServiceClientPactTest.testNoProducts()",
+        "text": [
+
+        ]
+      },
+      "description": "list all products given no products exist",
+      "key": "ec6143ea",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "no products exist"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/product"
+      },
+      "response": {
+        "body": {
+          "content": [
+
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "status": 200
+      },
+      "transport": "https",
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "comments": {
+        "testname": "com.example.pact.consumer.client.ProductServiceClientPactTest.testSingleProductNotExists()",
+        "text": [
+
+        ]
+      },
+      "description": "get product with id 10 given it does not exist",
+      "key": "b8b75ce6",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "product with id 10 does not exist"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/product/10"
+      },
+      "response": {
+        "status": 404
+      },
+      "transport": "https",
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "comments": {
+        "testname": "com.example.pact.consumer.client.ProductServiceClientPactTest.testSingleProduct()",
+        "text": [
+
+        ]
+      },
+      "description": "get product with id 10 given it exists",
+      "key": "2f476280",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "product with id 10 exists"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/product/10"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "id": 10,
+            "name": "28 Degrees",
+            "type": "CREDIT_CARD",
+            "version": "v1"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.type": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.version": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      },
+      "transport": "https",
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "comments": {
         "testname": "com.example.pact.consumer.client.ProductServiceClientPactTest.testAllProducts()",
         "text": [
 
         ]
       },
       "description": "list all products",
-      "key": "c7c5ace9",
+      "key": "c6bf9f2c",
       "pending": false,
+      "providerStates": [
+        {
+          "name": "products exist"
+        }
+      ],
       "request": {
         "method": "GET",
         "path": "/product"
