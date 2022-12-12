@@ -46,6 +46,7 @@ class ProductServiceClientPactTest {
     @Pact(consumer = "ProductCatalogueService", provider = "ProductService")
     V4Pact allProducts(PactDslWithProvider builder) {
         return builder
+                .given("products exist")
                 .uponReceiving("list all products")
                 .path("/product")
                 .method("GET")
@@ -79,5 +80,78 @@ class ProductServiceClientPactTest {
         assertNotNull(response);
         assertEquals(2, response.size());
         assertEquals(Set.of(9L, 10L), response.stream().map(Product::id).collect(Collectors.toSet()));
+    }
+
+    @Pact(consumer = "ProductCatalogueService", provider = "ProductService")
+    V4Pact noProducts(PactDslWithProvider builder) {
+        return builder
+                .given("no products exist")
+                .uponReceiving("list all products given no products exist")
+                .path("/product")
+                .method("GET")
+                .willRespondWith()
+                .status(200)
+                .headers(Map.of(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .body("[]")
+                .toPact(V4Pact.class);
+    }
+
+    @Test
+    @PactTestFor(pactMethod = "noProducts")
+    void testNoProducts() {
+        var response = client.list();
+
+        assertNotNull(response);
+        assertEquals(0, response.size());
+    }
+
+    @Pact(consumer = "ProductCatalogueService", provider = "ProductService")
+    V4Pact singleProduct(PactDslWithProvider builder) {
+        return builder
+                .given("product with id 10 exists")
+                .uponReceiving("get product with id 10 given it exists")
+                .path("/product/10")
+                .method("GET")
+                .willRespondWith()
+                .status(200)
+                .headers(Map.of(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
+                .body(
+                        new PactDslJsonBody()
+                                .integerType("id", 10L)
+                                .stringType("type", "CREDIT_CARD")
+                                .stringType("name", "28 Degrees")
+                                .stringType("version", "v1")
+                )
+                .toPact(V4Pact.class);
+    }
+
+    @Test
+    @PactTestFor(pactMethod = "singleProduct")
+    void testSingleProduct() {
+        var id = 10L;
+
+        assertEquals(
+                new Product(id, "28 Degrees", "CREDIT_CARD", "v1"),
+                client.get(id)
+        );
+    }
+
+    @Pact(consumer = "ProductCatalogueService", provider = "ProductService")
+    V4Pact singleProductNotExists(PactDslWithProvider builder) {
+        return builder
+                .given("product with id 10 does not exist")
+                .uponReceiving("get product with id 10 given it does not exist")
+                .path("/product/10")
+                .method("GET")
+                .willRespondWith()
+                .status(404)
+                .toPact(V4Pact.class);
+    }
+
+    @Test
+    @PactTestFor(pactMethod = "singleProductNotExists")
+    void testSingleProductNotExists() {
+        var ex = assertThrows(HttpClientErrorException.class, () -> client.get(10L));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 }
