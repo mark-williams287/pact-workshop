@@ -1,0 +1,61 @@
+{
+  "consumer": {
+    "name": "ProductCatalogueService"
+  },
+  "interactions": [
+    {
+      "comments": {
+        "testname": "com.example.pact.consumer.client.ProductServiceClientPactTest.testAllProducts()",
+        "text": [
+
+        ]
+      },
+      "description": "list all products",
+      "key": "c7c5ace9",
+      "pending": false,
+      "request": {
+        "method": "GET",
+        "path": "/product"
+      },
+      "response": {
+        "body": {
+          "content": [
+            {
+              "id": 9,
+              "name": "GEM Visa",
+              "type": "CREDIT_CARD",
+              "version": "v2"
+            },
+            {
+              "id": 10,
+              "name": "28 Degrees",
+              "type": "CREDIT_CARD",
+              "version": "v1"
+            }
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "status": 200
+      },
+      "transport": "https",
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pact-jvm": {
+      "version": "4.4.2"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "ProductService"
+  }
+}
